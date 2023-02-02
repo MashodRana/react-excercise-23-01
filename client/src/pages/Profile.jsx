@@ -3,12 +3,13 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 
 const Profile = () => {
+    const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
     const { profileId } = useParams();
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
-        const userProfileUrl = `http://127.0.0.1:5000/users/${profileId}`;
-        fetch(userProfileUrl)
+        // const userProfileUrl = `http://127.0.0.1:5000/users/${profileId}`;
+        fetch(`${userProfileUrl}/${profileId}`)
             .then(res => res.json())
             .then(data => setUserInfo(data))
     }, [profileId])
@@ -22,12 +23,12 @@ const Profile = () => {
                     <span>{userInfo?.name}</span>
                 </div>
                 <div className="flex py-2">
-                <label className="mr-4 text-md font-medium" htmlFor="">Sector: </label>
+                    <label className="mr-4 text-md font-medium" htmlFor="">Sector: </label>
                     <span>{userInfo?.sector?.label}</span>
                 </div>
                 <div>
-                <label className="mr-4 text-md font-medium" htmlFor="">Is Agree: </label>
-                    <span>{userInfo?.isAgree? 'Yes': 'No'}</span>
+                    <label className="mr-4 text-md font-medium" htmlFor="">Is Agree: </label>
+                    <span>{userInfo?.isAgree ? 'Yes' : 'No'}</span>
                 </div>
 
             </div>

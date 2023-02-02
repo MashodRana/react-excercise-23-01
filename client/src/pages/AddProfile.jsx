@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 
 const AddProfile = () => {
-  const sectorsUrl = `http://127.0.0.1:5000/sectors`;
-  const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
+  // const sectorsUrl = `http://127.0.0.1:5000/sectors`;
+  const sectorsUrl=`https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/sectors`
+  const userProfileUrl=`https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
+
+  // const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
   const [sectors, setSectors] = useState([]);
   const [elements, setElements] = useState([]);
   const [seletedSector, setSelectedSector] = useState({});
