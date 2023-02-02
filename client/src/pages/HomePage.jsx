@@ -17,8 +17,8 @@ const HomePage = () => {
     // const newElements = [...data, sectorObj.value];
     setElements(data);
     console.log("after filter elements: ", JSON.stringify(elements));
-    const elm = document.getElementById(`select-${elements[elements.length]}`)
-    console.log(elm)
+    const elm = document.getElementById(`select-${elements[elements.length]}`);
+    console.log(elm);
   };
 
   const handleOnChange2 = (sectorObj) => {};
@@ -36,37 +36,38 @@ const HomePage = () => {
     <>
       {/* <!-- component --> */}
       {console.log("elements: ", JSON.stringify(elements))}
-      <div class="w-full min-h-screen bg-gray-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-        <div class="w-full sm:max-w-md p-5 mx-auto">
-          <h2 class="text-center mb-5 text-5xl font-extrabold">Welcome.</h2>
+      <div className="w-full min-h-screen bg-gray-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+        <div className="w-full sm:max-w-md p-5 mx-auto">
+          <h2 className="text-center mb-5 text-5xl font-extrabold">Welcome.</h2>
           <p className="mb-12 text-center">
             Please enter your name and pick the Sectors you are currently
             involved in.
           </p>
           <form>
-            <div class="mb-4">
-              <label class="block mb-1" for="email">
+            <div className="mb-4">
+              <label className="block mb-1" htmlFor="email">
                 Name
               </label>
               <input
+                required
                 id="email"
                 type="text"
                 name="text"
-                class="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
+                className="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
             </div>
-            <div id="sector" class="mb-4">
-              <label class="block mb-1" for="password">
+            <div id="sector" className="mb-4">
+              <label className="block mb-1" htmlFor="sector">
                 Sectors
               </label>
               {elements.length
                 ? elements.map((element) =>
-                    sectors.find(s=>s.parent===element) ? (
-                      <Select 
-                      name="foo"
-                      required
-                      key={element}
-                      id={`select-${element}`}
+                    sectors.find((s) => s.parent === element) ? (
+                      <Select
+                        name="foo"
+                        required
+                        key={element}
+                        id={`select-${element}`}
                         options={sectors.filter(
                           (sector) => sector.parent === element
                         )}
@@ -80,24 +81,25 @@ const HomePage = () => {
                   )
                 : ""}
             </div>
-            <div class="mt-6 flex items-center justify-between">
-              <div class="flex items-center">
+            <div className="mt-6 flex items-center justify-between">
+              <div className="flex items-center">
                 <input
+                  required
                   id="remember_me"
                   type="checkbox"
-                  class="border border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
+                  className="border border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
                 />
                 <label
-                  for="remember_me"
-                  class="ml-2 block text-sm leading-5 text-gray-900"
+                  htmlFor="remember_me"
+                  className="ml-2 block text-sm leading-5 text-gray-900"
                 >
                   {" "}
                   Agree to terms{" "}
                 </label>
               </div>
             </div>
-            <div class="mt-6">
-              <button class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold capitalize text-white hover:bg-red-700 active:bg-red-700 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 disabled:opacity-25 transition">
+            <div className="mt-6">
+              <button className="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold capitalize text-white hover:bg-red-700 active:bg-red-700 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 disabled:opacity-25 transition">
                 Save
               </button>
             </div>
