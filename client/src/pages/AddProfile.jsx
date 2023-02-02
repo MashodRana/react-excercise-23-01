@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 
-const HomePage = () => {
+const AddProfile = () => {
   const sectorsUrl = `http://127.0.0.1:5000/sectors`;
   const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
   const [sectors, setSectors] = useState([]);
@@ -11,6 +12,7 @@ const HomePage = () => {
   const isAgreeRef = useRef(null);
   const nameRef = useRef("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleOnChange = (sectorObj) => {
     const index = elements.indexOf(sectorObj.parent);
@@ -24,7 +26,7 @@ const HomePage = () => {
     console.log("after filter elements: ", JSON.stringify(elements));
   };
 
-  const handleOnClick = async (evnt) => {
+  const handleOnClick = (evnt) => {
     evnt.preventDefault();
 
     const msg = `Please fill up the following field: Name, sector, agreement checkbox`;
@@ -46,14 +48,13 @@ const HomePage = () => {
       sector,
     };
     console.log("data is : ", JSON.stringify(data));
-    const response = await fetch(userProfileUrl, {
+    fetch(userProfileUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    if (response.status === 200) {
-      console.log(await response.json())
-    }
+      .then(res => res.json())
+      .then(data => navigate(`view-profile/${data.insertedId}`))
 
   };
 
@@ -68,8 +69,7 @@ const HomePage = () => {
 
   return (
     <>
-      {console.log("elements: ", JSON.stringify(elements))}
-      <div className="w-full min-h-screen bg-gray-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+      <div className="flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <div className="w-full sm:max-w-md p-5 mx-auto">
           <h2 className="text-center mb-5 text-5xl font-extrabold">Welcome.</h2>
           <p className="mb-12 text-center">
@@ -128,7 +128,7 @@ const HomePage = () => {
                 />
                 <label
                   htmlFor="remember_me"
-                  className="ml-2 block text-sm leading-5 text-gray-900"
+                  className="ml-2 block text-sm leading-5 text-amber-600"
                 >
                   {" "}
                   Agree to terms{" "}
@@ -164,4 +164,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default AddProfile;
