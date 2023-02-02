@@ -26,9 +26,20 @@ const HomePage = () => {
 
   const handleOnClick = (evnt) => {
     evnt.preventDefault();
+
+    const msg = `Please fill up the following field: Name, sector, agreement checkbox`;
     const name = nameRef.current.value;
-    const isAgree = isAgreeRef.current.checked;
     const sector = seletedSector;
+    const isAgree = isAgreeRef.current.checked;
+    
+    if(!name || !sector || !isAgree){
+        setError(msg);
+        return;
+    }
+    else{
+        setError("")
+    }
+        
     const data = {
       name,
       isAgree,
