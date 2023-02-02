@@ -62,12 +62,17 @@ const HomePage = () => {
               {elements.length
                 ? elements.map((element) =>
                     sectors.find(s=>s.parent===element) ? (
-                      <Select id={`select-${element}`}
+                      <Select 
+                      name="foo"
+                      required
+                      key={element}
+                      id={`select-${element}`}
                         options={sectors.filter(
                           (sector) => sector.parent === element
                         )}
                         onChange={handleOnChange}
                         defaultValue={`Select`}
+                        className="my-2"
                       />
                     ) : (
                       ""
