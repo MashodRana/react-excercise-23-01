@@ -10,6 +10,7 @@ const HomePage = () => {
   const [seletedSector, setSelectedSector] = useState({});
   const isAgreeRef = useRef(null);
   const nameRef = useRef("");
+  const [error, setError] = useState("");
 
   const handleOnChange = (sectorObj) => {
     const index = elements.indexOf(sectorObj.parent);
@@ -24,7 +25,7 @@ const HomePage = () => {
   };
 
   const handleOnClick = (evnt) => {
-    evnt.preventDefault()
+    evnt.preventDefault();
     const name = nameRef.current.value;
     const isAgree = isAgreeRef.current.checked;
     const sector = seletedSector;
@@ -95,6 +96,7 @@ const HomePage = () => {
                   )
                 : ""}
             </div>
+
             <div className="mt-6 flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -114,7 +116,19 @@ const HomePage = () => {
                 </label>
               </div>
             </div>
-            
+
+            {/* Error alerts */}
+            {error ? (
+              <div
+                class="bg-red-100 my-6 border border-red-400 text-red-700 px-4 py-2 rounded relative"
+                role="alert"
+              >
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">{error}</span>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="mt-6">
               <button
                 type="submit"
