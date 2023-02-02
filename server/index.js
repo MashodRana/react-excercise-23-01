@@ -26,14 +26,14 @@ async function run() {
     const userProfileCollection = database.collection('user-profile');
 
     // Get all sectors
-    app.get("/api/sectors", async (req, res) => {
+    app.get("/sectors", async (req, res) => {
       const cursor = sectorCollection.find({});
       const sectors = await cursor.toArray();
       return res.json(sectors);
     });
 
     // Save user to the database
-    app.post('/api/user-profile', async (req, res) => {
+    app.post('/user-profile', async (req, res) => {
       const user = req.body;
       const result = await userProfileCollection.insertOne(user);
       console.log(result);
@@ -41,7 +41,7 @@ async function run() {
     });
 
     // Get a user
-    app.get("/api/users/:profileId", async (req, res) => {
+    app.get("/users/:profileId", async (req, res) => {
       
       const profileId = req.params?.profileId;
       console.log(profileId)
@@ -78,12 +78,10 @@ async function run() {
 
 run().catch(console.dir);
 
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to the Server!!!");
 });
 
 app.listen(port, () => {
   console.log("Server listening at port ", port);
 });
-
-module.exports = app;
