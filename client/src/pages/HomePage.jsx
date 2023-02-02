@@ -14,10 +14,15 @@ const HomePage = () => {
     const [elements, setElements] = useState([]);
 
     const handleOnChange = (sectorObj) => {
-        const index = elements.findIndex(element => element.id === sectorObj.parent)
-       
+        const index = elements.indexOf(sectorObj.parent);
+        console.log(elements)
+        const data = elements.slice(0, index + 1)
+        data.push(sectorObj.value)
+        console.log('after filter: ', JSON.stringify(data))
 
-        setFlag(1);
+        // const newElements = [...data, sectorObj.value];
+        setElements(data)
+        console.log('after filter elements: ', JSON.stringify(elements))
 
     }
 
@@ -29,14 +34,15 @@ const HomePage = () => {
         fetch(sectorsUrl)
             .then(res => res.json())
             .then(data => {
-                setSectors(data)
-                setRootSectors(data.filter(s => s.parent === 0))
+                setSectors(data);
+                setElements([0]);
             })
     }, [sectorsUrl])
 
     return (
         <>
             {/* <!-- component --> */}
+            {console.log('elements: ', JSON.stringify(elements))}
             <div class="w-full min-h-screen bg-gray-50 flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
                 <div class="w-full sm:max-w-md p-5 mx-auto">
                     <h2 class="text-center mb-5 text-5xl font-extrabold">Welcome.</h2>
@@ -50,13 +56,11 @@ const HomePage = () => {
                         </div>
                         <div id='sector' class="mb-4">
                             <label class="block mb-1" for="password">Sectors</label>
-                            <Select options={rootSectors}
-                                onChange={handleOnChange}
-                            />
                             {
-                                flag ? <Select options={childSectors}
-                                    onChange={handleOnChange2}
-                                /> : ''
+                                elements.length ? elements.map(element => (<Select options={sectors.filter(sector => sector.parent === element)}
+                                    onChange={handleOnChange}
+                                />))
+                                    : ''
                             }
                         </div>
                         <div class="mt-6 flex items-center justify-between">
