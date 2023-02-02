@@ -40,13 +40,15 @@ async function run() {
       res.json(result);
     });
 
-    // Get a products
-    // app.get("/products/:productId", async (req, res) => {
-    //   const productId = req.params?.productId;
-    //   const query = { _id: ObjectId(productId) };
-    //   const product = await productsCollection.findOne(query);
-    //   res.json(product);
-    // })
+    // Get a user
+    app.get("/users/:profileId", async (req, res) => {
+      
+      const profileId = req.params?.profileId;
+      console.log(profileId)
+      const query = { _id: ObjectId(profileId) };
+      const userProfile = await userProfileCollection.findOne(query);
+      res.json(userProfile);
+    })
 
 
     // Update an order
@@ -68,7 +70,7 @@ async function run() {
 
     // });
 
-    
+
   } finally {
     // await client.close();
   }
