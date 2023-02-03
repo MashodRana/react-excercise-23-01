@@ -1,24 +1,26 @@
 import { useState, useRef, useEffect } from "react";
-import Select from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 
 
 const AddProfile = () => {
-  const sectorsUrl = `http://127.0.0.1:5000/sectors`;
-  // const sectorsUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/sectors`
-  // const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
+  const domain = `https://react-practice-23-1-server-20j6usd85-mashodrana.vercel.app`;
+  // const sectorsUrl = `http://127.0.0.1:5000/sectors`;
+  // const usersProfileUrl = `http://127.0.0.1:5000/users`;
+  // const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
 
-  // const usersProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
-  const usersProfileUrl = `http://127.0.0.1:5000/users`;
+  const sectorsUrl = `${domain}/sectors`
+  const userProfileUrl = `${domain}/user-profile`
+  const usersProfileUrl = `${domain}/users`;
 
-  const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
   const [sectors, setSectors] = useState([]);
   const [elements, setElements] = useState([]);
   const [seletedSector, setSelectedSector] = useState({});
   const [userInfo, setUserInfo] = useState({});
+  const [error, setError] = useState("");
+
   const isAgreeRef = useRef(null);
   const nameRef = useRef("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { profileId } = useParams();
 

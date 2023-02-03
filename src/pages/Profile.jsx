@@ -1,22 +1,30 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import editIcon from "../icons/icons8-edit-48.png"
 
+
 const Profile = () => {
-    const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
+    const domain = `https://react-practice-23-1-server-20j6usd85-mashodrana.vercel.app`;
+    // const sectorsUrl = `http://127.0.0.1:5000/sectors`;
+    // const usersProfileUrl = `http://127.0.0.1:5000/users`;
+    // const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
+
+    const sectorsUrl = `${domain}/sectors`
+    const userProfileUrl = `${domain}/user-profile`
+    const usersProfileUrl = `${domain}/users`;
+
     const { profileId } = useParams();
-    const [userInfo, setUserInfo] = useState({});
     const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState({});
+
 
     const handleOnClick = () => {
         navigate(`/update/${profileId}`)
     }
 
     useEffect(() => {
-        // const userProfileUrl = `http://127.0.0.1:5000/users/${profileId}`;
-        fetch(`${userProfileUrl}/${profileId}`)
+        fetch(`${usersProfileUrl}/${profileId}`)
             .then(res => res.json())
             .then(data => setUserInfo(data))
     }, [profileId])
