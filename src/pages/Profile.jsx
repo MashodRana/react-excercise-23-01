@@ -1,11 +1,18 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+
+import editIcon from "../icons/icons8-edit-48.png"
 
 const Profile = () => {
     const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
     const { profileId } = useParams();
     const [userInfo, setUserInfo] = useState({});
+    const navigate = useNavigate();
+
+    const handleOnClick = () => {
+        navigate(`/update/${profileId}`)
+    }
 
     useEffect(() => {
         // const userProfileUrl = `http://127.0.0.1:5000/users/${profileId}`;
@@ -15,7 +22,15 @@ const Profile = () => {
     }, [profileId])
     return (<>
         <div className="mx-auto w-11/12 mt-12 px-6">
-            <h1 className="text-xl my-6 font-bold">User Information</h1>
+            <div className="flex items-center">
+                <h1 className="text-xl my-6 font-bold">User Information</h1>
+                <button
+                    className="ml-6 w-6 h-6"
+                    onClick={handleOnClick}
+                >
+                    <img src={editIcon} alt="" />
+                </button>
+            </div>
 
             <div class="shadow-md sm:rounded-lg px-6 pt-6 pb-16">
                 <div className="flex py-2">

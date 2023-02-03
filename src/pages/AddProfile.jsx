@@ -1,21 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const AddProfile = () => {
-  // const sectorsUrl = `http://127.0.0.1:5000/sectors`;
-  const sectorsUrl=`https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/sectors`
-  const userProfileUrl=`https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
+  const sectorsUrl = `http://127.0.0.1:5000/sectors`;
+  // const sectorsUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/sectors`
+  const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
+  const usersProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
 
   // const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
   const [sectors, setSectors] = useState([]);
   const [elements, setElements] = useState([]);
   const [seletedSector, setSelectedSector] = useState({});
+  const [userInfo, setUserInfo] = useState({});
   const isAgreeRef = useRef(null);
   const nameRef = useRef("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { profileId } = useParams();
 
   const handleOnChange = (sectorObj) => {
     const index = elements.indexOf(sectorObj.parent);
@@ -57,7 +60,7 @@ const AddProfile = () => {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(data => navigate(`view-profile/${data.insertedId}`))
+      .then(data => navigate(`update-profile/${data.insertedId}`))
 
   };
 
@@ -66,9 +69,33 @@ const AddProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         setSectors(data);
-        setElements([0]);
+        if (!profileId) setElements([0]);
       });
-  }, [sectorsUrl]);
+
+    if (profileId) {
+      const url = `http://127.0.0.1:5000/users/${profileId}`;
+      console.log('url', url);
+      fetch(`${usersProfileUrl}/${profileId}`)
+        .then(res => res.json())
+        .then(data => {
+          setUserInfo(data)
+          const sectorValue = data.sector.value;
+          let parentId = data.sector.parent;
+          let array = [sectorValue];
+          if (parentId === 0) array.push(parentId);
+          while (parentId) {
+            const sect = sectors.find(s => s.value === parentId);
+            parentId = sect.parent;
+            array.push(parentId);
+          }
+
+          array.reverse();
+
+          setElements(array);
+
+        })
+    }
+  }, [sectorsUrl, profileId]);
 
   return (
     <>
@@ -90,13 +117,15 @@ const AddProfile = () => {
                 type="text"
                 name="name"
                 ref={nameRef}
+                value={userInfo.name}
                 className="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
             </div>
             <div id="sector" className="mb-4">
               <label className="block mb-1" htmlFor="sector">
-                Sectors
+                Sector
               </label>
+              {console.log('elements array: ', JSON.stringify(elements))}
               {elements.length
                 ? elements.map((element) =>
                   sectors.find((s) => s.parent === element) ? (
@@ -109,7 +138,8 @@ const AddProfile = () => {
                         (sector) => sector.parent === element
                       )}
                       onChange={handleOnChange}
-                      defaultValue={`Select`}
+                      // defaultValue={`Select`}
+                      defaultValue={`mashod`}
                       className="my-2"
                     />
                   ) : (
@@ -117,6 +147,8 @@ const AddProfile = () => {
                   )
                 )
                 : ""}
+
+
             </div>
 
             <div className="mt-6 flex items-center justify-between">

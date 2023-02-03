@@ -10,9 +10,10 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header/>
+        <Header />
         <Routes>
           <Route path='/' element={<AddProfile />} />
+          <Route path='/update/:profileId' element={<AddProfile />} />
           <Route path='view-profile/:profileId' element={<Profile />} />
         </Routes>
       </div>
