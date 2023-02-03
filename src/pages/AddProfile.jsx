@@ -6,10 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 const AddProfile = () => {
   const sectorsUrl = `http://127.0.0.1:5000/sectors`;
   // const sectorsUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/sectors`
-  const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
-  const usersProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
+  // const userProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/user-profile`
 
-  // const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
+  // const usersProfileUrl = `https://react-practice-23-1-server-j63gxvyxf-mashodrana.vercel.app/users`;
+  const usersProfileUrl = `http://127.0.0.1:5000/users`;
+
+  const userProfileUrl = `http://127.0.0.1:5000/user-profile`;
   const [sectors, setSectors] = useState([]);
   const [elements, setElements] = useState([]);
   const [seletedSector, setSelectedSector] = useState({});
@@ -31,6 +33,39 @@ const AddProfile = () => {
     setSelectedSector(sectorObj);
     console.log("after filter elements: ", JSON.stringify(elements));
   };
+
+  const updateUserProfile = async (data) => {
+    console.log('proifle is updating....')
+    const response = await fetch(`${usersProfileUrl}/${profileId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+
+    if (response.status === 200) {
+      console.log('Update Successfull')
+      const response_data = await response.json();
+      console.log(response_data);
+
+      navigate(`/view-profile/${response_data._id}`)
+    }
+    else {
+      console.log('Update Failed!!!')
+    }
+  }
+
+  const createUserProfile = (data) => {
+    console.log('proifle is creating....')
+
+    fetch(userProfileUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => navigate(`view-profile/${data.insertedId}`))
+  }
+
 
   const handleOnClick = (evnt) => {
     evnt.preventDefault();
@@ -54,13 +89,9 @@ const AddProfile = () => {
       sector,
     };
     console.log("data is : ", JSON.stringify(data));
-    fetch(userProfileUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => navigate(`update-profile/${data.insertedId}`))
+    if (profileId) updateUserProfile(data)
+    else createUserProfile(data)
+
 
   };
 
@@ -70,6 +101,7 @@ const AddProfile = () => {
       .then((data) => {
         setSectors(data);
         if (!profileId) setElements([0]);
+        setUserInfo({})
       });
 
     if (profileId) {
@@ -85,6 +117,7 @@ const AddProfile = () => {
           if (parentId === 0) array.push(parentId);
           while (parentId) {
             const sect = sectors.find(s => s.value === parentId);
+            console.log(sect)
             parentId = sect.parent;
             array.push(parentId);
           }
@@ -108,8 +141,8 @@ const AddProfile = () => {
           </p>
           <form>
             <div className="mb-4">
-              <label className="block mb-1" htmlFor="email">
-                Name
+              <label className="block mb-1" htmlFor="name">
+                <span className="font-semibold">Name</span>
               </label>
               <input
                 required
@@ -117,13 +150,13 @@ const AddProfile = () => {
                 type="text"
                 name="name"
                 ref={nameRef}
-                value={userInfo.name}
+                value={userInfo?.name}
                 className="py-2 px-3 border border-gray-300 focus:border-red-300 focus:outline-none focus:ring focus:ring-red-200 focus:ring-opacity-50 rounded-md shadow-sm disabled:bg-gray-100 mt-1 block w-full"
               />
             </div>
             <div id="sector" className="mb-4">
               <label className="block mb-1" htmlFor="sector">
-                Sector
+                <span className="font-semibold mr-4">Sector</span>
               </label>
               {console.log('elements array: ', JSON.stringify(elements))}
               {elements.length
@@ -159,6 +192,7 @@ const AddProfile = () => {
                   name="isAgree"
                   ref={isAgreeRef}
                   type="checkbox"
+                  checked={userInfo?.isAgree}
                   className="border border-gray-300 text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50"
                 />
                 <label
@@ -189,7 +223,7 @@ const AddProfile = () => {
                 onClick={handleOnClick}
                 className="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold capitalize text-white hover:bg-green-700 active:bg-green-700 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 disabled:opacity-25 transition"
               >
-                Save
+                {profileId ? 'Update Profile' : 'Save'}
               </button>
             </div>
           </form>

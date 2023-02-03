@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path='/' element={<AddProfile />} />
           <Route path='/update/:profileId' element={<AddProfile />} />
-          <Route path='view-profile/:profileId' element={<Profile />} />
+          <Route path='/view-profile/:profileId' element={<Profile />} />
         </Routes>
       </div>
     </BrowserRouter>
